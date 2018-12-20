@@ -10,7 +10,6 @@ class buton(Frame):
         Frame.__init__( self, master )
         self.grid()
         self.make_button()
-        self.pack()
         self.char = char
 
     def make_button(self):
@@ -43,6 +42,14 @@ def find( pozitie1, pozitie2 ):
 
     return 'b'
 
+def evaluate1( event ):
+    if str(eval(e1.get())) == str(linie1):
+        raspuns.grid(row = 14, columnspan= 12)
+
+def evaluate2( event ):
+    if str(eval(e2.get())) == str(linie2):
+        raspuns["text"] = "Felicitari! Ai aflat raspunsul corect din " + str(nrClick) + " incercari! "
+
 root = Tk()
 root.title( "Matrice" )
 root.geometry( "300x400" )
@@ -67,8 +74,8 @@ for i in range(10):
         x = buton( root, ch )
         x.grid(row = i , column = j)
 
-if e1.get() == str(linie1) and e2.get() == str(linie2):
-    raspuns = Label( root, text="Ai aflat raspunsul corect din " + str(nrClick)
-                     + " incercari!" )
-    raspuns.grid(row = 14, columnspan= 5)
+raspuns = Label( root, text="Mai ai de aflat o linie!")
+e1.bind("<Return>", evaluate1)
+e2.bind("<Return>", evaluate2)
+
 root.mainloop() 
