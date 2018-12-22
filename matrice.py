@@ -1,8 +1,7 @@
 from Tkinter import *
+import generator as g
 
-linie1 = input("Introduceti prima linie: ")
-linie2 = input("Introduceti a doua linie: ")
-zona = input("Introduceti zona: ")
+linie1, linie2, zona = g.generator_input()
 nrClick = 0
 
 class buton(Frame):
@@ -43,16 +42,45 @@ def find( pozitie1, pozitie2 ):
     return 'b'
 
 def evaluate1( event ):
+    global ok1
+    global ok2
     if str(eval(e1.get())) == str(linie1):
         raspuns.grid(row = 14, columnspan= 12)
+        if ok2:
+            evaluate2( event )
+        else:
+            raspuns["text"] = "Mai ai de aflat o linie!"
+        ok1 = 1
+    else:
+        raspuns.grid(row = 14, columnspan= 12)
+        raspuns["text"] = "Ai gresit!"
 
 def evaluate2( event ):
+    global ok1
+    global ok2
     if str(eval(e2.get())) == str(linie2):
-        raspuns["text"] = "Felicitari! Ai aflat raspunsul corect din " + str(nrClick) + " incercari! "
+        ok2 = 1
+        if ok1:
+            raspuns["text"] = "Felicitari! Ai aflat raspunsul corect din " + str(nrClick) + " incercari! "
+            for it in ButtonsList:
+                if it.char == 'b':
+                    it.buton.configure( text = it.char , fg = 'blue' )
+                else:
+                    it.buton["text"] = it.char
+        else:
+            raspuns.grid(row = 14, columnspan= 12)
+            raspuns["text"] = "Mai ai de aflat o linie!"
+    else:
+        raspuns.grid(row = 14, columnspan= 12)
+        raspuns["text"] = "Ai gresit!"
 
+        
 root = Tk()
 root.title( "Matrice" )
 root.geometry( "300x400" )
+
+ok1 = 0
+ok2 = 0
 
 click = Label(root, text="Numar incercari: " + str(nrClick))
 click.grid(row=11, columnspan = 5)
@@ -67,12 +95,13 @@ e2 = Entry(root)
 e2.grid(row = 13, column = 4, columnspan = 5)
 
 
-
+ButtonsList = []
 for i in range(10):
     for j in range(10):
         ch = find( i , j )
         x = buton( root, ch )
         x.grid(row = i , column = j)
+        ButtonsList.append(x)
 
 raspuns = Label( root, text="Mai ai de aflat o linie!")
 e1.bind("<Return>", evaluate1)
