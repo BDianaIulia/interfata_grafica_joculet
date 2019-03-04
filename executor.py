@@ -2,9 +2,9 @@ from Tkinter import *
 
 def ShowChoice():
     if v.get() == '1':
-        import pc
+        import YouVsPc
     if v.get() == '2':
-        import matrice
+        import PcVsYou
 
 app = Tk()
 app.title('Application')
